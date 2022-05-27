@@ -1,0 +1,6 @@
+config:
+  doggo-practice:backend_port: "5000"
+  doggo-practice:frontend_port: "3000"
+  doggo-practice:node_environment: development
+  doggo-practice:postgres_port: "5432"
+  doggo-practice:protocol: http://
