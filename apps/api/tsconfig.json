@@ -1,0 +1,21 @@
+{
+	"compilerOptions": {
+		"outDir": "dist",
+		"baseUrl": "./src",
+		"module": "commonjs",
+		"target": "es2015",
+		"lib": ["es2017"],
+		"strictNullChecks": true,
+		"noImplicitAny": false,
+		"preserveConstEnums": true,
+		"removeComments": true,
+		"forceConsistentCasingInFileNames": true,
+		"skipLibCheck": true,
+		"esModuleInterop": true,
+	},
+	"exclude": [
+		"node_modules",
+		".turbo",
+		"dist",
+	]
+}

@@ -21,7 +21,7 @@ COPY --from=builder /app/out/full/ .
 
 RUN yarn turbo run build --scope=web --include-dependencies --no-deps
 
-EXPOSE 80
-ENV PORT 80
+EXPOSE 3000
+ENV PORT 3000
 
 ENTRYPOINT ["yarn", "turbo", "run", "start", "--scope=web" ]
