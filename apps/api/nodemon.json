@@ -1,0 +1,5 @@
+{
+  "ignore": ["node_modules/**", "dist", "**/*.spec.ts", "**/*.test.ts"],
+  "exec": "yarn compile",
+  "delay": "1000"
+}

@@ -19,19 +19,19 @@ app.get("/", (req, res) => {
   return res.json({ message: "Hello World!" });
 });
 
-app.post("/create-bucket", (req, res) => {
+app.post("/create-bucket", async (req, res) => {
   const command = new CreateBucketCommand({ Bucket: bucketName });
-  const created = client.send(command);
+  const created = await client.send(command);
   return res.json({ created });
 });
 
-app.get("/s3-url", (req, res) => {
+app.get("/s3-url", async (req, res) => {
   const command = new PutObjectCommand({
     Bucket: bucketName,
     Key: randomUUID(),
   });
-  const url = getSignedUrl(client, command, { expiresIn: 30 });
 
+  const url = await getSignedUrl(client, command, { expiresIn: 30 });
   return res.json({ url });
 });
 
