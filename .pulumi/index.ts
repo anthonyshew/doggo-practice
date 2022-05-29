@@ -1,87 +1,82 @@
-import * as pulumi from '@pulumi/pulumi'
+import * as pulumi from "@pulumi/pulumi";
 import * as awsx from "@pulumi/awsx";
 import * as aws from "@pulumi/aws";
-import * as docker from '@pulumi/docker'
+import * as docker from "@pulumi/docker";
 
 // Get the config for the stack.
-const config = new pulumi.Config()
+const config = new pulumi.Config();
 
 // Get the stack that we're running in.
-const stack = pulumi.getStack()
+const stack = pulumi.getStack();
 
-let frontendContainer
-let backendContainer
+let frontendContainer;
+let backendContainer;
 
 if (stack === "dev") {
-  const frontendPort = config.requireNumber("frontend_port")
-  const backendPort = config.requireNumber("backend_port")
-  const nodeEnvironment = config.require("node_environment")
-  const protocol = config.require("protocol")
+  const frontendPort = config.requireNumber("frontend_port");
+  const backendPort = config.requireNumber("backend_port");
+  const nodeEnvironment = config.require("node_environment");
+  const protocol = config.require("protocol");
 
   const backend = new docker.Image("backend", {
     imageName: "practice-backend",
     localImageName: "practice-backend",
     build: {
       context: "../",
-      dockerfile: "../apps/api/Dockerfile"
-    }
-  })
+      dockerfile: "../apps/api/Dockerfile",
+    },
+  });
 
   const frontend = new docker.Image("frontend", {
     imageName: "practice-frontend",
     localImageName: "practice-frontend",
     build: {
       context: "../",
-      dockerfile: "../apps/web/Dockerfile"
-    }
-  })
+      dockerfile: "../apps/web/Dockerfile",
+    },
+  });
 
   const network = new docker.Network("network", {
-    name: `$services-${stack}`
-  })
+    name: `$services-${stack}`,
+  });
 
- backendContainer = new docker.Container("backendContainer", {
+  backendContainer = new docker.Container("backendContainer", {
     name: `backend-${stack}`,
     image: backend.baseImageName,
     ports: [
-        {
-            internal: backendPort,
-            external: backendPort,
-        },
+      {
+        internal: backendPort,
+        external: backendPort,
+      },
     ],
-    envs: [
-        `NODE_ENV=${nodeEnvironment}`,
-    ],
+    envs: [`NODE_ENV=${nodeEnvironment}`],
     networksAdvanced: [
-        {
-            name: network.name,
-        },
+      {
+        name: network.name,
+      },
     ],
-});
+  });
 
-
-frontendContainer = new docker.Container("frontendContainer", {
+  frontendContainer = new docker.Container("frontendContainer", {
     name: `frontend-${stack}`,
     image: frontend.baseImageName,
     ports: [
-        {
-            internal: frontendPort,
-            external: frontendPort
-        },
+      {
+        internal: frontendPort,
+        external: frontendPort,
+      },
     ],
-    envs: [
-        `NODE_ENV=${nodeEnvironment}`,
-    ],
+    envs: [`NODE_ENV=${nodeEnvironment}`],
     networksAdvanced: [
-        {
-            name: network.name,
-        },
+      {
+        name: network.name,
+      },
     ],
-});
+  });
 }
 
-export const frontend = frontendContainer?.ports
-export const backend = backendContainer?.ports
+export const frontend = frontendContainer?.ports;
+export const backend = backendContainer?.ports;
 
 // BELOW HERE IS ME TRYING TO GET IT INTO THE CLOUD
 // / Build an image and push it to the repository.
