@@ -7,7 +7,6 @@
     "packages/*"
   ],
   "scripts": {
-    "localstack": "docker-compose -f docker-compose.yml up -d && turbo run dev",
     "build": "turbo run build",
     "dev": "turbo run dev --parallel",
     "lint": "turbo run lint",
