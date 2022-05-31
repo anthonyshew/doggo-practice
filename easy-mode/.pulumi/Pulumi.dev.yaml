@@ -1,0 +1,4 @@
+config:
+  aws:region: us-east-1
+  easy-mode:frontend_port: "80"
+  easy-mode:port: "80"
